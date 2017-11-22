@@ -202,6 +202,10 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 	ELSEIF(CMD(1:NCMD) .EQ. '*E') THEN
 	    call ecalibration(0)
 	    call checkgates(0)
+        
+        ELSEIF(CMD(1:NCMD) .EQ. 'DC') THEN
+            call ecalibration05
+        
 	ELSEIF(CMD(1:NCMD) .EQ. '*K') THEN
 	   IF(RMARKRI.NE.RMARKLE) then
 	     if( aener1 .eq. aener2 )then
@@ -1047,6 +1051,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 	WRITE(6,*) 'DE             Define how to do efficiency correction'
 	WRITE(6,*) 'DG             Define peak width (individual/common) for fit'
 	WRITE(6,*) 'DK AK          Energy and Width calibration'
+	WRITE(6,*) 'DC             New Energy Calibration A(1)=0.5'
 	WRITE(6,*) 'DF DL          Define output file for Area calculations'
 	WRITE(6,*) 'DT CT AT       Recalibration using Trackfit'
 	WRITE(6,*) 'DW CW          Define, Estract cuts from compressed matrix'
@@ -1694,6 +1699,39 @@ c	e tutte le possibili combinazioni
 	RETURN
 
 	END
+
+
+
+*   RLica, 21 Nov 2017 
+	SUBROUTINE ECALIBRATION05
+
+#include "trackn.inc"    
+    
+    
+        DO II=1,m$k+1
+	     ECAL(II)=0.
+        end do
+    
+        ECAL(2)=0.5
+
+        	WRITE(6,*)
+            WRITE(6,*) ' New Energy Calibration'
+            WRITE(6,*)
+            DO II=1,m$k
+#if defined( __GFORTRAN__ )
+	   WRITE(6,'('' A('',I1,'')   = '',1PG0)') II-1,ECAL(II)
+#else
+	   WRITE(6,'('' A('',I1,'')   = '',1PG)') II-1,ECAL(II)
+#endif
+	end do
+    
+	RETURN
+
+	END
+    
+    
+    
+    
 
 	SUBROUTINE ECALIBRATION(ICOB)
 

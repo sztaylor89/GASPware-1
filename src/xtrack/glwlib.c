@@ -146,7 +146,7 @@ static struct ButtonInFrame TrackNewSpec,TrackWriteSpec, TrackIncSpec,TrackDecSp
                             TrackAutoX, TrackAutoY,
                             TrackAutoXY, TrackLinLog, TrackRefresh,
                             TrackDoPkS, TrackDoFit, TrackDoInt,
-			    TrackCal2P, TrackAutoTrace, TrackEnCal;
+			    TrackCal2P, TrackAutoTrace, TrackEnCal, Track05;
 
 struct TrackPlot *Plot, *CrtPlot, *OldPlot;
 static Int32 NofPlots;
@@ -1209,6 +1209,11 @@ void xtpget_(float *x, float *y, Int32 *c){
 		       if(MouseInButton(TrackEnCal) && (val == 1) ) { 
 		          PutTrackData(CrtPlot);
 		          *c = '*' ; (*c)<<=8 ; *c+='E' ;
+			  *x=1 ; *y=1 ; return; 
+			  }
+			   if(MouseInButton(Track05) && (val == 1) ) { 
+		          PutTrackData(CrtPlot);
+		          *c = 'D' ; (*c)<<=8 ; *c+='C' ;
 			  *x=1 ; *y=1 ; return; 
 			  }
 		       
@@ -3517,6 +3522,19 @@ void DrawTrackFrame(Int32 win){
  TrackEnCal.Text="EnCal\0";
  DrawButton(TrackEnCal);
 
+ y1=y2+ 2*pixelsizeY;
+ y2= y1+ (float)GLW_FRAMEWIDTH*pixelsizeY/3.0;
+ Track05.x1=x1Wp+x;
+ Track05.y1=y1Wp+y1;
+ Track05.x2=x1Wp+11.00*x;
+ Track05.y2=y1Wp+y2;
+ Track05.bgcolor=GLW_LABELCOLOR_1;
+ Track05.pushcolor=GLW_FRAMECOLOR;
+ Track05.Push=0;
+ Track05.fgcolor=CYAN;
+ if(Track05.Text == NULL)Track05.Text=(char *)calloc(6,sizeof(char));
+ Track05.Text="0.5 keV\0";
+ DrawButton(Track05);
 
 /* Right side buttons */
  x= (float) GLW_FRAMEWIDTH*pixelsizeX/8.000 ;
