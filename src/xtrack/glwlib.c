@@ -1213,7 +1213,7 @@ void xtpget_(float *x, float *y, Int32 *c){
 			  }
 			   if(MouseInButton(Track05) && (val == 1) ) { 
 		          PutTrackData(CrtPlot);
-		          *c = 'D' ; (*c)<<=8 ; *c+='C' ;
+		          *c = '*' ; (*c)<<=8 ; *c+='C' ;
 			  *x=1 ; *y=1 ; return; 
 			  }
 		       

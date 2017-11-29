@@ -981,7 +981,7 @@ c	endif
 	list=' '
 	lgh=1
 	if(dat.which .GE. 10) lgh=2
-#if defined( __GFORTRAN__ )
+#if defined(__GFORTRAN__)
 	write(dyn_format,'(i4)')lgh
 	dyn_format = adjustl(dyn_format)
 	write(list,dyn_format)' HGATE   H',dat.which,'  on'

@@ -204,7 +204,11 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 	    call checkgates(0)
         
         ELSEIF(CMD(1:NCMD) .EQ. 'DC') THEN
+            call ecalibrationx
+        
+        ELSEIF(CMD(1:NCMD) .EQ. '*C') THEN
             call ecalibration05
+            
         
 	ELSEIF(CMD(1:NCMD) .EQ. '*K') THEN
 	   IF(RMARKRI.NE.RMARKLE) then
@@ -1708,11 +1712,19 @@ c	e tutte le possibili combinazioni
 #include "trackn.inc"    
     
     
-        DO II=1,m$k+1
-	     ECAL(II)=0.
-        end do
+*        DO II=1,m$k+1
+*	     ECAL(II)=0.
+*        end do
+        ii=2
     
-        ECAL(2)=0.5
+        IF(ECAL(ii).EQ.1) THEN
+            ECAL(ii)=0.5
+        ELSEIF(ECAL(ii).EQ.0.5) THEN
+            ECAL(ii)=1.0
+        ELSE
+            ECAL(ii)=0.5
+        ENDIF
+        
 
         	WRITE(6,*)
             WRITE(6,*) ' New Energy Calibration'
@@ -1728,6 +1740,47 @@ c	e tutte le possibili combinazioni
 	RETURN
 
 	END
+    
+    
+	SUBROUTINE ECALIBRATIONX
+
+#include "trackn.inc"    
+    
+        character*9 strk
+        DO II=1,m$k+1
+	     ECAL(II)=0.
+        end do
+        ii=2
+            
+        	WRITE(6,*)
+            WRITE(6,*) ' New Energy Calibration'
+            WRITE(6,*)
+            
+            write(strk,'(''A('',i1,'')  '')') ii-1
+            lnch=INP_R1(strk,ECAL(ii))
+            if(lnch.eq.-1) return
+
+            
+            DO II=1,m$k
+#if defined( __GFORTRAN__ )
+	   WRITE(6,'('' A('',I1,'')   = '',1PG0)') II-1,ECAL(II)
+#else
+	   WRITE(6,'('' A('',I1,'')   = '',1PG)') II-1,ECAL(II)
+#endif
+	end do
+    
+	RETURN
+
+	END
+    
+    
+    
+    
+        
+    
+    
+    
+          
     
     
     
